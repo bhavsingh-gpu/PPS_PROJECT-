@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecurePass Analyzer | Premium Security</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <meta name="description" content="A premium, state-of-the-art password strength analyzer and generator.">
+</head>
+<body class="dark-theme">
+    <div id="glitch-background"></div>
+    
+    <header>
+        <div class="logo">
+            <span class="shield-icon">🛡️</span>
+            <h1>SecurePass<span>.</span></h1>
+        </div>
+        
+        <div class="theme-switch">
+            <div class="toggle-container">
+                <input class="toggle-input" type="checkbox" id="theme-toggle">
+                <div class="toggle-handle-wrapper">
+                    <div class="toggle-handle">
+                        <div class="toggle-handle-knob"></div>
+                        <div class="toggle-handle-bar-wrapper">
+                            <div class="toggle-handle-bar"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="toggle-base">
+                    <div class="toggle-base-inside"></div>
+                </div>
+            </div>
+            <span class="theme-label">Light Mode</span>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="card glass">
+                <div class="card-header">
+                    <h2>Analyze Strength</h2>
+                    <p>Enter your password to check its security level.</p>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="password-input" placeholder="Type your password here..." autocomplete="off">
+                    <button id="toggle-visibility" title="Toggle Visibility">👁️</button>
+                </div>
+
+                <div class="strength-meter-container">
+                    <div class="meter-labels">
+                        <span id="strength-label">Waiting...</span>
+                        <span id="strength-score">0/100</span>
+                    </div>
+                    <div class="meter-track">
+                        <div id="strength-bar"></div>
+                    </div>
+                </div>
+
+                <div id="feedback-container" class="feedback-list">
+                    <!-- Feedback items will appear here -->
+                </div>
+            </div>
+
+            <div class="card glass secondary">
+                <div class="card-header">
+                    <h2>Generate Secure Password</h2>
+                    <p>Create a strong, randomized password instantly.</p>
+                </div>
+
+                <div class="generator-controls">
+                    <div class="length-control">
+                        <label for="length-slider">Length: <span id="length-value">16</span></label>
+                        <input type="range" id="length-slider" min="8" max="32" value="16">
+                    </div>
+                    <button id="generate-btn" class="btn-primary">Generate Now</button>
+                </div>
+
+                <div class="generated-output hidden" id="generated-container">
+                    <div class="password-display">
+                        <code id="generated-password">********</code>
+                        <button id="copy-btn" title="Copy to clipboard">📋</button>
+                    </div>
+                    <p class="copy-status" id="copy-status"></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 SecurePass Analyzer. Premium Security Protocol v1.0</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
