@@ -8,6 +8,7 @@
     --accent-secondary: #61b3dc;
     --border-color: rgba(255, 255, 255, 0.1);
     --shadow-color: rgba(0, 0, 0, 0.5);
+    --overlay-color: rgba(5, 5, 5, 0.5);
     
     /* Strength Colors */
     --strength-weak: #ff4d4d;
@@ -27,6 +28,7 @@ body.light-theme {
     --accent-secondary: #0077b6;
     --border-color: rgba(0, 0, 0, 0.1);
     --shadow-color: rgba(0, 0, 0, 0.1);
+    --overlay-color: rgba(245, 247, 250, 0.5);
 }
 
 * {
@@ -50,102 +52,340 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: -2; /* Pushed further back */
+}
+
+.bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--overlay-color);
+    backdrop-filter: blur(4px); /* Reduced blur */
+    -webkit-backdrop-filter: blur(4px);
     z-index: -1;
 }
 
-/* Header & Theme Toggle */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 2rem 5%;
-    max-width: 1400px;
-    margin: 0 auto;
+/* CARD NAV INTEGRATION */
+.card-nav-container {
+  position: absolute;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%; /* Increased width percentage */
+  max-width: 1200px; /* Increased max-width */
+  z-index: 99;
+  box-sizing: border-box;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+.card-nav {
+  display: block;
+  height: 60px;
+  padding: 0;
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px var(--shadow-color);
+  position: relative;
+  overflow: hidden;
+  will-change: height;
+  transition: background 0.3s ease;
 }
 
-.logo h1 {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.8rem;
-    font-weight: 700;
-    letter-spacing: -0.5px;
+.card-nav-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.2rem;
+  z-index: 10;
 }
 
-.logo span {
-    color: var(--accent-primary);
+.hamburger-menu {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  gap: 6px;
+  width: 40px;
 }
 
-.theme-switch {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+.hamburger-line {
+  width: 28px;
+  height: 2px;
+  background-color: var(--text-primary);
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.theme-label {
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--text-secondary);
+.hamburger-menu.open .hamburger-line:first-child {
+  transform: translateY(4px) rotate(45deg);
 }
 
-/* DOOR KNOB TOGGLE STYLES */
+.hamburger-menu.open .hamburger-line:last-child {
+  transform: translateY(-4px) rotate(-45deg);
+}
+
+.logo-container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.card-nav-cta-button {
+  background-color: var(--accent-primary);
+  color: #000;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.card-nav-cta-button:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.card-nav-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 60px;
+  bottom: 0;
+  padding: 1rem;
+  display: flex;
+  align-items: flex-end;
+  gap: 15px;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.card-nav.open .card-nav-content {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.nav-card {
+  height: 100%;
+  flex: 1 1 0;
+  min-width: 0;
+  border-radius: 0.75rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1.2rem;
+  gap: 0.5rem;
+  user-select: none;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.nav-card-label {
+  font-weight: 700;
+  font-size: 1.2rem;
+  font-family: 'Outfit', sans-serif;
+}
+
+.nav-card-links {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.nav-card-link {
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  opacity: 0.8;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.nav-card-link:hover {
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+@media (max-width: 768px) {
+  .card-nav-cta-button { display: none; }
+  .card-nav-content { flex-direction: column; align-items: stretch; }
+  .nav-card { height: auto; min-height: 80px; }
+}
+
+/* EXACT JOYSTICK LEVER TOGGLE FROM USER */
 .toggle-container {
-    --knob-size: 1.25em;
-    display: flex;
-    justify-content: center;
-    position: relative;
-    width: 3.5em;
-    height: 1.8em;
+  --knob-size: 1.75em;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  font-size: 16px; /* Ensure em sizing is consistent */
+  margin-top: 2rem; /* Add some space above the toggle */
 }
 
 .toggle-input {
-    position: absolute;
-    z-index: 5;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
+  position: absolute;
+  z-index: 2;
+  bottom: 132.5%;
+  border-radius: 50%;
+  transform: rotate(-25deg);
+  transform-origin: 50% 4.75em;
+  width: var(--knob-size);
+  height: var(--knob-size);
+  opacity: 0;
+  /* fix em sizing */
+  font: inherit;
+  transition: transform .24s cubic-bezier(.65, 1.35, .5, 1);
+  cursor: pointer;
 }
 
-.toggle-base {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: var(--border-color);
-    border-radius: 1em;
-    transition: background 0.3s ease;
+.toggle-input:checked {
+  transform: rotate(25deg);
 }
 
 .toggle-handle-wrapper {
-    position: absolute;
-    top: 0.25em;
-    left: 0.25em;
-    width: 1.3em;
-    height: 1.3em;
-    transition: transform 0.3s cubic-bezier(.65, 1.35, .5, 1);
+  position: absolute;
+  z-index: 1;
+  bottom: -135%;
+  -webkit-mask-image: linear-gradient(to bottom, #000 62.125%, transparent 50%);
+  mask-image: linear-gradient(to bottom, #000 62.125%, transparent 50%);
+  width: 200%;
+  overflow: hidden;
+}
+
+.toggle-handle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: rotate(-25deg);
+  transform-origin: bottom center;
+  transition: transform .24s cubic-bezier(.65, 1.35, .5, 1);
+}
+
+.toggle-input:checked + .toggle-handle-wrapper > .toggle-handle {
+  transform: rotate(25deg);
 }
 
 .toggle-handle-knob {
-    width: 100%;
-    height: 100%;
-    background: var(--accent-primary);
-    border-radius: 50%;
-    box-shadow: 0 2px 5px var(--shadow-color);
+  position: relative;
+  z-index: 1;
+  border-radius: 50%;
+  width: var(--knob-size);
+  height: var(--knob-size);
+  background-image: radial-gradient(farthest-corner at 70% 30%, #fedee2 4%, #d63534 12% 24%, #a81a1a 50% 65%, #d63534 75%);
+  transition: transform .24s cubic-bezier(.65, 1.35, .5, 1);
 }
 
-.toggle-input:checked + .toggle-handle-wrapper {
-    transform: translateX(1.7em);
+.toggle-input:checked + .toggle-handle-wrapper .toggle-handle-knob {
+  transform: rotate(-90deg);
+}
+
+/* toggle handle knob hover inner shadow */
+.toggle-handle-knob::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 0 8px 2px rgb(255 255 255 / .4);
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+@media (hover: hover) {
+  .toggle-input:hover + .toggle-handle-wrapper .toggle-handle-knob::after,
+  .toggle-input:focus-visible + .toggle-handle-wrapper .toggle-handle-knob::after {
+    opacity: 1;
+  }
+}
+
+.toggle-handle-bar-wrapper {
+  position: relative;
+  width: .5em;
+  height: 3em;
+}
+
+.toggle-handle-bar {
+  position: absolute;
+  top: calc(var(--knob-size) / 2 * -1);
+  left: 0;
+  width: 100%;
+  height: calc(100% + var(--knob-size) / 2);
+  background-image: linear-gradient(to right, #777475, #a4a4a4, #fff 45% 55%, #a4a4a4, #777475);
+  background-position-x: .06125em;
+  transition: background-position-x .24s cubic-bezier(.65, 1.35, .5, 1);
+  box-shadow: inset 0 1em .25em rgb(0 0 0 / .4);
+}
+
+.toggle-input:checked + .toggle-handle-wrapper .toggle-handle-bar {
+  background-position-x: -.06125em;
+}
+
+.toggle-base {
+  position: relative;
+  border-radius: 3.125em;
+  padding: .25em;
+  width: 3.5em;
+  height: 1.125em;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom, #fff, #d7d7d7);
+  box-shadow: 0 -.25em .5em #fff, 0 .25em .5em #d7d7d7;
+}
+
+.toggle-base-inside {
+  position: relative;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to bottom, #a6a6a6, #7d7d7d);
+  box-shadow: inset 0 .0625em rgb(255 255 255 / .2), inset 0 -.03125em rgb(255 255 255 / 1), inset 0 -.0625em .25em rgb(0 0 0 / .1);
+}
+
+/* toggle base inside active */
+.toggle-base-inside::after {
+  content: '';
+  position: absolute;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to bottom, #5ab054, #438c3c);
+  box-shadow: inherit;
+  opacity: 0;
+  transition: opacity .24s cubic-bezier(.65, 1.35, .5, 1);
+}
+
+.toggle-input:checked ~ .toggle-base .toggle-base-inside::after {
+  opacity: 1;
 }
 
 /* Main Content */
 main {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem 5%;
+    padding: 120px 5% 2rem; /* Increased top padding for CardNav */
 }
 
 .hero {

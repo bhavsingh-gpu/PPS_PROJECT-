@@ -214,9 +214,99 @@ function generatePassword(length) {
 }
 
 /**
+ * CardNav Logic - Vanilla JS Implementation
+ */
+const CARD_ITEMS = [
+    {
+        label: "Security",
+        bgColor: "#1B1722",
+        textColor: "#fff",
+        links: [
+            { label: "Protocols", href: "#" },
+            { label: "Compliance", href: "#" }
+        ]
+    },
+    {
+        label: "Resources", 
+        bgColor: "#2F293A",
+        textColor: "#fff",
+        links: [
+            { label: "Documentation", href: "#" },
+            { label: "API Reference", href: "#" }
+        ]
+    },
+    {
+        label: "Support",
+        bgColor: "#2F293A", 
+        textColor: "#fff",
+        links: [
+            { label: "Help Center", href: "#" },
+            { label: "Contact Us", href: "#" }
+        ]
+    }
+];
+
+function initCardNav() {
+    const nav = document.getElementById('card-nav');
+    const content = document.getElementById('card-nav-content');
+    const hamburger = document.getElementById('hamburger-menu');
+    let isExpanded = false;
+
+    // Inject Cards
+    content.innerHTML = CARD_ITEMS.map(item => `
+        <div class="nav-card" style="background-color: ${item.bgColor}; color: ${item.textColor}">
+            <div class="nav-card-label">${item.label}</div>
+            <div class="nav-card-links">
+                ${item.links.map(lnk => `
+                    <a class="nav-card-link" href="${lnk.href}">
+                        <span>↗</span> ${lnk.label}
+                    </a>
+                `).join('')}
+            </div>
+        </div>
+    `).join('');
+
+    const cards = content.querySelectorAll('.nav-card');
+
+    function calculateHeight() {
+        if (window.innerWidth <= 768) {
+            return 60 + content.scrollHeight + 16;
+        }
+        return 300;
+    }
+
+    const tl = gsap.timeline({ paused: true });
+    tl.to(nav, { height: calculateHeight, duration: 0.4, ease: "power3.out" })
+      .fromTo(cards, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, stagger: 0.08, ease: "power3.out" }, "-=0.2");
+
+    hamburger.addEventListener('click', () => {
+        isExpanded = !isExpanded;
+        hamburger.classList.toggle('open', isExpanded);
+        nav.classList.toggle('open', isExpanded);
+        
+        if (isExpanded) {
+            content.setAttribute('aria-hidden', 'false');
+            tl.play();
+        } else {
+            content.setAttribute('aria-hidden', 'true');
+            tl.reverse();
+        }
+    });
+
+    window.addEventListener('resize', () => {
+        if (isExpanded) {
+            gsap.set(nav, { height: calculateHeight() });
+        }
+    });
+}
+
+/**
  * UI Controller
  */
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize CardNav
+    initCardNav();
+
     // Initialize Glitch Background
     const bgContainer = document.getElementById('glitch-background');
     const canvas = document.createElement('canvas');
@@ -224,31 +314,27 @@ document.addEventListener('DOMContentLoaded', () => {
     bgContainer.appendChild(canvas);
     
     const glitch = new LetterGlitch('glitch-canvas', {
-        glitchColors: ['#2b4539', '#61dca3', '#61b3dc'],
+        glitchColors: ['#e0e0e0', '#2b4539', '#0077b6'],
         glitchSpeed: 60
     });
 
     // Theme Toggle
     const themeToggle = document.getElementById('theme-toggle');
     const body = document.body;
-    const themeLabel = document.querySelector('.theme-label');
 
     themeToggle.addEventListener('change', () => {
         if (themeToggle.checked) {
-            body.classList.remove('dark-theme');
-            body.classList.add('light-theme');
-            themeLabel.textContent = "Dark Mode";
-            // Update glitch colors for light mode
-            glitch.glitchColors = ['#e0e0e0', '#2b4539', '#0077b6'];
-        } else {
             body.classList.remove('light-theme');
             body.classList.add('dark-theme');
-            themeLabel.textContent = "Light Mode";
             glitch.glitchColors = ['#2b4539', '#61dca3', '#61b3dc'];
+        } else {
+            body.classList.remove('dark-theme');
+            body.classList.add('light-theme');
+            glitch.glitchColors = ['#e0e0e0', '#2b4539', '#0077b6'];
         }
     });
 
-    // Password Analyzer
+    // Password Analyzer (keep rest of logic...)
     const passwordInput = document.getElementById('password-input');
     const strengthBar = document.getElementById('strength-bar');
     const strengthLabel = document.getElementById('strength-label');

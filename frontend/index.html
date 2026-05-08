@@ -8,35 +8,53 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <meta name="description" content="A premium, state-of-the-art password strength analyzer and generator.">
 </head>
-<body class="dark-theme">
+<body class="light-theme">
     <div id="glitch-background"></div>
+    <div class="bg-overlay"></div>
     
-    <header>
-        <div class="logo">
-            <span class="shield-icon">🛡️</span>
-            <h1>SecurePass<span>.</span></h1>
-        </div>
-        
-        <div class="theme-switch">
-            <div class="toggle-container">
-                <input class="toggle-input" type="checkbox" id="theme-toggle">
-                <div class="toggle-handle-wrapper">
-                    <div class="toggle-handle">
-                        <div class="toggle-handle-knob"></div>
-                        <div class="toggle-handle-bar-wrapper">
-                            <div class="toggle-handle-bar"></div>
+    <div class="card-nav-container">
+        <nav id="card-nav" class="card-nav">
+            <div class="card-nav-top">
+                <div id="hamburger-menu" class="hamburger-menu" role="button" aria-label="Open menu" tabindex="0">
+                    <div class="hamburger-line"></div>
+                    <div class="hamburger-line"></div>
+                </div>
+
+                <div class="logo-container">
+                    <div class="logo">
+                        <span class="shield-icon">🛡️</span>
+                        <h1>SecurePass<span>.</span></h1>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <div class="theme-switch">
+                        <div class="toggle-container">
+                            <input class="toggle-input" type="checkbox" id="theme-toggle">
+                            <div class="toggle-handle-wrapper">
+                                <div class="toggle-handle">
+                                    <div class="toggle-handle-knob"></div>
+                                    <div class="toggle-handle-bar-wrapper">
+                                        <div class="toggle-handle-bar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="toggle-base">
+                                <div class="toggle-base-inside"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="toggle-base">
-                    <div class="toggle-base-inside"></div>
-                </div>
             </div>
-            <span class="theme-label">Light Mode</span>
-        </div>
-    </header>
+
+            <div id="card-nav-content" class="card-nav-content" aria-hidden="true">
+                <!-- Cards will be injected by script.js -->
+            </div>
+        </nav>
+    </div>
 
     <main>
         <section class="hero">
