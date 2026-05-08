@@ -270,9 +270,9 @@ function initCardNav() {
 
     function calculateHeight() {
         if (window.innerWidth <= 768) {
-            return 60 + content.scrollHeight + 16;
+            return 80 + content.scrollHeight + 16;
         }
-        return 300;
+        return 320;
     }
 
     const tl = gsap.timeline({ paused: true });
@@ -363,8 +363,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     toggleVisibility.addEventListener('click', () => {
         const isPassword = passwordInput.type === 'password';
+        const icon = document.getElementById('visibility-icon');
         passwordInput.type = isPassword ? 'text' : 'password';
-        toggleVisibility.textContent = isPassword ? '🙈' : '👁️';
+        
+        if (isPassword) {
+            icon.src = "../visibility_off_80dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.png";
+        } else {
+            icon.src = "../visibility_80dp_FFFFFF_FILL0_wght400_GRAD0_opsz48.png";
+        }
     });
 
     // Password Generator
